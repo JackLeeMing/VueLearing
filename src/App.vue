@@ -1,17 +1,19 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
+    <Demo></Demo>
     <HelloWorld :val="val" msg="Welcome to Your Vue.js App" @change="handleChange"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-
+import Demo from './components/Demo'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    Demo
   },
   data(){
     return {
