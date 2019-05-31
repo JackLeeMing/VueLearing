@@ -1,41 +1,114 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="app" v-bind:id="'popp'">
+    {{listToString}}
+    <h1>{{ msg }}</h1> 
+      <div id="poppp">
+        <div v-bind:[fg]="gf">{{searchText}}===>{{searchText2}}</div>
+
+        <div :style="{fontSize: postFontSize+'em'}">{{inVal || '~~'}}</div>
+        <br />
+          <input type="text" :value="inVal" @change="handleChange" @input="dataChange">
+        <br />
+        <br />
+        <div @click="clcikParent">
+          <a-button type="primary" @click="clcikChild1" >清空</a-button> &nbsp;&nbsp;
+          <a-button type="primary" @click.stop="clcikChild2" v-bind:disabled="pop">重置</a-button>
+        </div>
+    </div>
+    <ul>
+      <v-item v-for="(item, index) in reverseItems" :key="`${item}-${index}`" title="Hello">
+        <template v-slot:item="itemProps">
+          <span :class="{itemOut:itemProps.checked,  'text-danger': itemProps.checked}">{{item}}</span>
+        </template>
+      </v-item>
+    </ul>
+    <!--从组建内部外传的事件监听 放在父组件的 对应子组件的标签上 用v-on 的形式 可直接操作 data-->
+    <v-term v-on:inPost="postFontSize += 0.1"></v-term>
+    
+    <custom-input v-model="searchText">hello1</custom-input>
+    <custom-input v-model="searchText2">hell2</custom-input>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
   </div>
 </template>
 
 <script>
+import Item from './Item';
+import Term from './Term';
+import CustomInput from './CustomInput'
 export default {
   name: 'HelloWorld',
+  inheritAttrs: false,
   props: {
-    msg: String
-  }
+    msg: String,
+    val:{
+      type: String,
+      default: ''
+    }
+  },
+  components: {
+    'v-item':Item,
+    'v-term':Term,
+    CustomInput,
+  },
+  computed: {
+    listToString() {
+      return this.list.join('--'); 
+    },
+    reverseItems(){
+      return this.list.reverse();
+    }
+  },
+  data() {
+    return {
+      list: ['a1', 'a2', 'a3'],
+      inVal:'',
+      pop:true,
+      gf:'45',
+      fg:'item',
+      searchText:'ljk123',
+      searchText2:'ljk124',
+      hasError:true,
+      hidden:false,
+      postFontSize:1,
+    }
+  },
+  methods: {
+    dataChange(e){
+      this.inVal = e.target.value;
+      this.pop = false;
+      this.$emit('change', this.inVal);
+    },
+    handleChange(e){
+      this.inVal = e.target.value;
+      this.$emit('change', this.inVal);
+    },
+    clcikParent() {
+      this.inVal = '';
+      this.pop = true;
+      let p = this.$emit('change', "");
+      console.log('p', p);
+    },
+    clcikChild1(e){
+      this.list.push("CCDD");
+      e.stopPropagation();
+      this.inVal = '';
+      this.pop = true;
+      let p = this.$emit('change', "");
+    },
+    clcikChild2(){
+      // 不是响应性的 不会触发UI刷新
+      // this.list[1] = "AABBCC";
+      //触发UI刷新
+      //need import Vue from 'vue'
+      // Vue.set(this.list, 1, 'AABBCC')
+       this.$set(this.list, 1, this.inVal);
+      // this.list.splice(1,1, 'AABBCC')
+    }
+  },
 }
 </script>
 
@@ -55,4 +128,9 @@ li {
 a {
   color: #42b983;
 }
+
+/* .itemOut{
+  color: blue;
+  font-size: 36px;
+} */
 </style>

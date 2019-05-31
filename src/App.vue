@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld :val="val" msg="Welcome to Your Vue.js App" @change="handleChange"/>
   </div>
 </template>
 
@@ -12,7 +12,20 @@ export default {
   name: 'app',
   components: {
     HelloWorld
-  }
+  },
+  data(){
+    return {
+      value2:true,
+      val:''
+    }
+  },
+  methods: {
+    handleChange(val){
+      this.val = val;
+      return "lijiakui"
+    }
+  },
+  
 }
 </script>
 
