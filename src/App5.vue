@@ -7,12 +7,14 @@
         <br/>
          <a-button type="primary" @click="handleClickAsync">++ async</a-button>
          <br/>
-         <div>{{scount || -1}}--{{sname || 'xxx'}}</div>
+         <div>{{metoObj.count || -1}}--{{metoObj.name || 'xxx'}}---{{metoObj.meto}}</div>
     </div>
 </template>
 
 <script>
     import { mapState, mapGetters } from 'vuex';
+    import {INCREMENT, SET_OBJ, ASYNC_INCREMENT} from './mutations/mutation-types'
+import { setTimeout } from 'timers';
     export default {
         data() {
             return {
@@ -33,8 +35,7 @@
                 //要能使用this 必须使用 （）函数
                 return state.count + this.count;
             },
-            scount: state => state.obj.count,
-            sname: state => state.obj.name
+            metoObj: state => state.obj
 
         }),
         ...mapGetters(['doubleCount']),
@@ -53,15 +54,20 @@
         methods: {
             handleClickSync() {
                 //当使用对象风格的提交方式，整个对象都作为载荷传给 mutation 函数，因此 handler 保持不变
-                this.$store.commit({type: "increment", amount: 10});
+                this.$store.commit({type: INCREMENT, amount: 10});
+                this.$store.commit({type: SET_OBJ, count: 100, name:'JaqueLee.'})
                 this.obj = {count: 100, pname:'io'}
                 
                 
             },
             handleClickAsync(){
-                this.obj.mute += 100;
-                this.$store.dispatch("increment", 100);
-                this.obj.pname = "Jaque Lee."+'lf;dlf;'
+                this.count += 100;
+                // 异步调用函数
+                this.$store.dispatch(ASYNC_INCREMENT);
+                setTimeout(()=>{
+                    this.count -= 50;
+                }, 500)
+               
             }
         },
     }
