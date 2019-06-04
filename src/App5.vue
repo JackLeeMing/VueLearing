@@ -16,7 +16,6 @@
 <script>
     import { mapState, mapGetters, mapActions } from 'vuex';
     import {INCREMENT, SET_OBJ, ASYNC_INCREMENT} from './mutations/mutation-types'
-import { setTimeout } from 'timers';
     export default {
         data() {
             return {
@@ -31,7 +30,7 @@ import { setTimeout } from 'timers';
         },
         computed:{
             // 展开对象,将state中的对象融入到 计算属性对象中去
-            ...mapState({
+            ...mapState('app',{
             dataCount: state => state.count,
             sumCount(state){
                 //要能使用this 必须使用 （）函数
@@ -40,7 +39,7 @@ import { setTimeout } from 'timers';
             metoObj: state => state.obj
 
              }),
-            ...mapGetters(['doubleCount', 'result']),
+            ...mapGetters('app',['doubleCount', 'result']),
             allCount(){
                 return this.dataCount + this.sumCount;
             }
@@ -53,14 +52,14 @@ import { setTimeout } from 'timers';
         ]),
         */
         methods: {
-            ...mapActions({
-                add: ASYNC_INCREMENT,
+            ...mapActions('app',{
+                add: `${ASYNC_INCREMENT}`,
                 opt: 'actionB'
             }),
             handleClickSync() {
                 //当使用对象风格的提交方式，整个对象都作为载荷传给 mutation 函数，因此 handler 保持不变
-                this.$store.commit({type: INCREMENT, amount: 10});
-                this.$store.commit({type: SET_OBJ, count: 100, name:'JaqueLee.'})
+                this.$store.commit({type: `app/${INCREMENT}`, amount: 10});
+                this.$store.commit({type: `app/${SET_OBJ}`, count: 100, name:'JaqueLee.'})
                 this.obj = {count: 100, pname:'io'}  
             },
             handleClickAsync(){
