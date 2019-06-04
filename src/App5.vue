@@ -8,11 +8,13 @@
          <a-button type="primary" @click="handleClickAsync">++ async</a-button>
          <br/>
          <div>{{metoObj.count || -1}}--{{metoObj.name || 'xxx'}}---{{metoObj.meto}}</div>
+         <br/>
+         <p>{{result}}</p>
     </div>
 </template>
 
 <script>
-    import { mapState, mapGetters } from 'vuex';
+    import { mapState, mapGetters, mapActions } from 'vuex';
     import {INCREMENT, SET_OBJ, ASYNC_INCREMENT} from './mutations/mutation-types'
 import { setTimeout } from 'timers';
     export default {
@@ -37,12 +39,11 @@ import { setTimeout } from 'timers';
             },
             metoObj: state => state.obj
 
-        }),
-        ...mapGetters(['doubleCount']),
-        allCount(){
-            return this.dataCount + this.sumCount;
-        }
-
+             }),
+            ...mapGetters(['doubleCount', 'result']),
+            allCount(){
+                return this.dataCount + this.sumCount;
+            }
         },
         /*
         注意 count 不能在 data 中做预先定义
@@ -52,21 +53,31 @@ import { setTimeout } from 'timers';
         ]),
         */
         methods: {
+            ...mapActions({
+                add: ASYNC_INCREMENT,
+                opt: 'actionB'
+            }),
             handleClickSync() {
                 //当使用对象风格的提交方式，整个对象都作为载荷传给 mutation 函数，因此 handler 保持不变
                 this.$store.commit({type: INCREMENT, amount: 10});
                 this.$store.commit({type: SET_OBJ, count: 100, name:'JaqueLee.'})
-                this.obj = {count: 100, pname:'io'}
-                
-                
+                this.obj = {count: 100, pname:'io'}  
             },
             handleClickAsync(){
-                this.count += 100;
-                // 异步调用函数
-                this.$store.dispatch(ASYNC_INCREMENT);
-                setTimeout(()=>{
-                    this.count -= 50;
-                }, 500)
+                // this.count += 100;
+                // // 异步调用函数
+                // this.$store.dispatch({type: ASYNC_INCREMENT, amount: 10});
+                // setTimeout(()=>{
+                //     this.count -= 50;
+                // }, 500)
+                // action 返回 Promise
+                this.opt();
+                // this.add().then((data)=>{
+                //     if(data.status == 'done'){
+                //         this.$store.commit({type: INCREMENT, amount:data.amount || 55});
+                //         alert(JSON.stringify(data));
+                //     }
+                // });
                
             }
         },
