@@ -29,6 +29,7 @@ function getOtherData(){
 }
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   modules: {
     app: {
       namespaced: true,
@@ -39,7 +40,8 @@ const store = new Vuex.Store({
         },
         result:{
     
-        }
+        },
+        input:'--'
       },
       // 更改 Vuex 的 store 中的状态的唯一方法 reducer
       // Mutation 必须是同步函数
@@ -60,6 +62,9 @@ const store = new Vuex.Store({
           if(payload){
             state.result = { ...state.result, ...payload}
           }
+        },
+        updateInput(state, val){
+          state.input = val;
         }
       },
       // Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，
@@ -92,6 +97,9 @@ const store = new Vuex.Store({
         },
         result: state=>{
           return JSON.stringify(state.result);
+        },
+        input: state => {
+          return state.input;
         }
       }
     }

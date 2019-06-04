@@ -1,5 +1,9 @@
 <template>
     <div id="app">
+        <br/>
+        <br/>
+        <div>input： {{input}}</div>
+        <br/>
         <p style="color:#0f0; font-size:18px">数值: {{dataCount}}//{{doubleCount}}---{{sumCount}}---{{allCount}}</p>
         <br/>
         <a-button type="primary" @click="handleClickSync">++ sync</a-button>
@@ -10,6 +14,8 @@
          <div>{{metoObj.count || -1}}--{{metoObj.name || 'xxx'}}---{{metoObj.meto}}</div>
          <br/>
          <p>{{result}}</p>
+         <!-- <input v-model="inputVal"> -->
+         <input :value="inputVal" @input="updateVal">
     </div>
 </template>
 
@@ -32,15 +38,15 @@
         computed:{
             // 展开对象,将state中的对象融入到 计算属性对象中去
             ...mapState({
-            dataCount: state => state.count,
-            sumCount(state){
-                //要能使用this 必须使用 （）函数
-                return state.count + this.count;
-            },
-            metoObj: state => state.obj
-
+                dataCount: state => state.count,
+                sumCount(state){
+                    //要能使用this 必须使用 （）函数
+                    return state.count + this.count;
+                },
+                metoObj: state => state.obj,
+                inputVal: state => state.input,
              }),
-            ...mapGetters(['doubleCount', 'result']),
+            ...mapGetters(['doubleCount', 'result', 'input']),
             allCount(){
                 return this.dataCount + this.sumCount;
             }
@@ -79,6 +85,9 @@
                 //     }
                 // });
                
+            },
+            updateVal(e){
+                this.$store.commit('app/updateInput', e.target.value);
             }
         },
     }
