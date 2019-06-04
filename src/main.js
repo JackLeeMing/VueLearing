@@ -13,22 +13,34 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state:{
-    count: 0
+    count: 0,
+    obj:{
+      
+    }
   },
+  // 更改 Vuex 的 store 中的状态的唯一方法 reducer
   mutations:{
-    increment(state){
-      state.count += 1;
+    // 载荷（Payload） 可以向 store.commit 传入额外的参数，即 mutation 的 载荷（payload)
+    'increment': (state, payload={amount : 1})=>{
+      state.count += payload.amount;
     }
   },
   actions:{
-    increment({commit}){
-      setTimeout(()=>{
-        commit('increment');
-      }, 3000)
+    increment(action){
+     let p =  new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve('done')
+          }, 3000)
+      });
+      p.then((data)=>{
+        if(data == 'done'){
+          action.commit('increment');
+        }
+      });
     }
   },
   getters:{
-    doubleCount(state){
+    doubleCount: state => {
       return state.count * 2;
     }
   }
