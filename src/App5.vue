@@ -2,20 +2,24 @@
     <div id="app">
         <br/>
         <br/>
-        <div>input： {{input}}</div>
+        <div>input1： {{input}}</div>
+        <div>input2： {{input2}}</div>
         <br/>
         <p style="color:#0f0; font-size:18px">数值: {{dataCount}}//{{doubleCount}}---{{sumCount}}---{{allCount}}</p>
         <br/>
         <a-button type="primary" @click="handleClickSync">++ sync</a-button>
         <br/>
         <br/>
-         <a-button type="primary" @click="handleClickAsync">++ async</a-button>
-         <br/>
-         <div>{{metoObj.count || -1}}--{{metoObj.name || 'xxx'}}---{{metoObj.meto}}</div>
-         <br/>
-         <p>{{result}}</p>
-         <!-- <input v-model="inputVal"> -->
-         <input :value="inputVal" @input="updateVal">
+        <a-button type="primary" @click="handleClickAsync">++ async</a-button>
+        <br/>
+        <div>{{metoObj.count || -1}}--{{metoObj.name || 'xxx'}}---{{metoObj.meto}}</div>
+        <br/>
+        <p>{{result}}</p>
+        <br/>
+        <input :value="inputVal" @input="updateVal" :style="{width: '30%'}">
+        <br/>
+        <br/>
+        <input v-model="inputVal2" :style="{width: '30%'}">
     </div>
 </template>
 
@@ -45,10 +49,19 @@
                 },
                 metoObj: state => state.obj,
                 inputVal: state => state.input,
+                input2: state => state.input2,
              }),
-            ...mapGetters(['doubleCount', 'result', 'input']),
+            ...mapGetters(['doubleCount', 'result', 'input', 'input2']),
             allCount(){
                 return this.dataCount + this.sumCount;
+            },
+            inputVal2:{
+                get(){
+                    return  this.input2// or this.$store.state.app.input2;
+                },
+                set(nVal){
+                    this.$store.commit("app/updateInput2", nVal);
+                }
             }
         },
         /*

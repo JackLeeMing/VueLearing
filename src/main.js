@@ -41,7 +41,8 @@ const store = new Vuex.Store({
         result:{
     
         },
-        input:'--'
+        input:'给 <input> 中绑定 value，然后侦听 input 或者 change 事件',
+        input2:'双向绑定的计算属性'
       },
       // 更改 Vuex 的 store 中的状态的唯一方法 reducer
       // Mutation 必须是同步函数
@@ -65,6 +66,9 @@ const store = new Vuex.Store({
         },
         updateInput(state, val){
           state.input = val;
+        },
+        updateInput2(state, val){
+          state.input2 = val;
         }
       },
       // Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，
@@ -100,6 +104,9 @@ const store = new Vuex.Store({
         },
         input: state => {
           return state.input;
+        },
+        input2: state => {
+          return state.input2;
         }
       }
     }
