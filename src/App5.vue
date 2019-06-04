@@ -14,7 +14,8 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex'
+    const { mapState, mapGetters, mapActions  } = createNamespacedHelpers('app')
     import {INCREMENT, SET_OBJ, ASYNC_INCREMENT} from './mutations/mutation-types'
     export default {
         data() {
@@ -30,7 +31,7 @@
         },
         computed:{
             // 展开对象,将state中的对象融入到 计算属性对象中去
-            ...mapState('app',{
+            ...mapState({
             dataCount: state => state.count,
             sumCount(state){
                 //要能使用this 必须使用 （）函数
@@ -39,7 +40,7 @@
             metoObj: state => state.obj
 
              }),
-            ...mapGetters('app',['doubleCount', 'result']),
+            ...mapGetters(['doubleCount', 'result']),
             allCount(){
                 return this.dataCount + this.sumCount;
             }
@@ -52,7 +53,7 @@
         ]),
         */
         methods: {
-            ...mapActions('app',{
+            ...mapActions({
                 add: `${ASYNC_INCREMENT}`,
                 opt: 'actionB'
             }),
