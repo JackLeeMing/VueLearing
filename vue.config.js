@@ -1,6 +1,24 @@
+const path = require('path')
+
+const resolve = dir => {
+  return path.join(__dirname, dir)
+}
+
+// 项目部署基础
+// 默认情况下，我们假设你的应用将被部署在域的根目录下,
+// 例如：https://www.my-app.com/
+// 默认：'/'
+// 如果您的应用程序部署在子路径中，则需要在这指定子路径
+// 例如：https://www.foobar.com/my-app/
+// 需要将它改为'/my-app/'
+// iview-admin线上演示打包路径： https://file.iviewui.com/admin-dist/
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? '/'
+  : '/'
+
 module.exports = {
     // 基本路径
-    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
+    publicPath: BASE_URL,
     // 输出文件目录
     outputDir: 'dist', // 默认dist
     // 用于嵌套生成的静态资产（js,css,img,fonts）目录
@@ -64,5 +82,10 @@ module.exports = {
     // 第三方插件配置
     pluginOptions: {
     // ...
-    }
+    },
+    chainWebpack: config => {
+      config.resolve.alias
+        .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+        .set('_c', resolve('src/components'))
+    },
   }

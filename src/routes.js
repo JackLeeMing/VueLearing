@@ -3,10 +3,11 @@ import VueRouter from 'vue-router'
 import RouterDemo from './components/RouterDemo'
 import RouterChildrenDemo from './components/RouterChildrenDemo'
 import Link from "./components/Link"
-import Menu from './components/Menu'
+// import Menu from './components/Menu'
 import MenuDemo from './components/MenuDemo'
 import App from './App5.vue'
 import Login from './Login.vue'
+import Main from '@/components/main'
 
 Vue.use(VueRouter)
 
@@ -39,7 +40,29 @@ Vue.use(VueRouter)
       ]
     },
     { path: '/link', component: Link, name:'link' },
-    { path: '/', component: Menu, name:'index' },
+    {
+      path: '/',
+      name: '_home',
+      redirect: '/home',
+      component: Main,
+      meta: {
+        hideInMenu: true,
+        notCache: true
+      },
+      children: [
+        {
+          path: '/home',
+          name: 'home',
+          meta: {
+            hideInMenu: true,
+            title: '首页',
+            notCache: true,
+            icon: 'md-home'
+          },
+          component: () => import('@/view/single-page/home')
+        }
+      ]
+    },
     { path: '*', component: RouterDemo, name: '404' }
   ]
   
