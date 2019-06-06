@@ -3,11 +3,15 @@
         <canvas id="canvas"></canvas>
     </div>
 </template>
-
 <script>
-    import THREE from 'three'
+  import * as THREE from 'three'
+  import OrbitControls from 'three-orbitcontrols'
+  import chroma from "chroma-js"
+  // import {OBJLoader} from 'three-obj-mtl-loader'
     export default {
-        
+        mounted () {
+            App();
+        },
     }
 function App() {
   const conf = {
@@ -175,6 +179,6 @@ html, body {
 canvas {
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 80%;
 }
 </style>

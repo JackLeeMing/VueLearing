@@ -48,6 +48,6 @@ let vue = new Vue({
   router,
   store,
   i18n,
-  render: h => h(Test),
+  render: h => h(App),
 });
 vue.$mount('#app');
