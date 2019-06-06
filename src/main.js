@@ -3,6 +3,7 @@ import router from './router'
 import store from './store'
 import { directive as clickOutside } from 'v-click-outside-x'
 import App from './App'
+import Test from './Test2'
 import Antd from 'ant-design-vue'
 import iView from 'iview';
 import i18n from '@/locale'
@@ -47,6 +48,6 @@ let vue = new Vue({
   router,
   store,
   i18n,
-  render: h => h(App),
+  render: h => h(Test),
 });
 vue.$mount('#app');
