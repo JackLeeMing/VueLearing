@@ -37,7 +37,7 @@
     "simplemde": "^1.11.2",
     "simplex-noise": "^2.4.0",
     "sortablejs": "^1.7.0",
-    "three": "^0.105.2",
+    "three": "^0.125.0",
     "three-orbitcontrols": "^2.102.1",
     "tree-table-vue": "^1.1.0",
     "v-org-tree": "^1.0.6",
