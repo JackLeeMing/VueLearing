@@ -16,7 +16,7 @@
     "chroma": "0.0.1",
     "chroma-js": "^2.0.3",
     "clipboard": "^2.0.4",
-    "codemirror": "^5.38.0",
+    "codemirror": "^5.58.2",
     "core-js": "^2.6.5",
     "countup": "^1.8.2",
     "cropperjs": "^1.2.2",
